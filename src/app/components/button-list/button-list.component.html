@@ -4,9 +4,15 @@
       <mat-panel-title>{{ button.label }}</mat-panel-title>
     </mat-expansion-panel-header>
     <div class="dropdown" *ngIf="button.show">
-      <button mat-button *ngFor="let prompt of button.prompts" (click)="addToPrompt(prompt)">
-        {{ prompt }}
-      </button>
+      <div 
+        class="dropdown-item" 
+        *ngFor="let prompt of button.prompts"
+        (mouseenter)="setPreview(prompt.image)"
+        (mouseleave)="setPreview(null)"
+        (click)="addToPrompt(prompt.name)">
+        {{ prompt.name }}
+      </div>
     </div>
   </mat-expansion-panel>
 </mat-accordion>
+

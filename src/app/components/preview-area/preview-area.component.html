@@ -1,7 +1,10 @@
 <div class="preview-area">
     <h3>Preview</h3>
-    <div class="preview-content">
-      {{ previewText }}
+    <div class="preview-content" *ngIf="previewImage; else noPreview">
+      <img [src]="previewImage" alt="Preview" />
     </div>
-</div>
+    <ng-template #noPreview>
+      <p>Hover over an option to preview</p>
+    </ng-template>
+  </div>
   

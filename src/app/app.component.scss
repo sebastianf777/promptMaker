@@ -20,11 +20,16 @@ div {
     text-align: center;
     /* Ensure the text aligns properly */
 }
+app-button-list,
+app-preview-area {
+    flex: 1; /* Each takes 50% of available space */
+  }
+
 
 .content-container {
     display: flex;
     flex-direction: row;
-    align-items: center;
     gap: 20px;
     margin: 20px;
+    width: 450px;
   }
