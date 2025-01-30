@@ -1,6 +1,7 @@
 .wrapper {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     /* Center horizontally */
     align-items: center;
     /* Center vertically */
@@ -22,7 +23,7 @@ div {
 
 .content-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 20px;
     margin: 20px;

@@ -6,7 +6,7 @@ import { PromptService } from '../../services/prompt-service';
   standalone: true,
   imports: [],
   templateUrl: './prompt-area.component.html',
-  styleUrls: ['./prompt-area.component.css']
+  styleUrls: ['./prompt-area.component.scss']
 })
 export class PromptAreaComponent {
   fullPrompt: string = '';
