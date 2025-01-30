@@ -1,0 +1,12 @@
+<mat-accordion class="accordion-container">
+  <mat-expansion-panel *ngFor="let button of buttons; let i = index" [expanded]="button.show">
+    <mat-expansion-panel-header (click)="toggleDropdown(i)">
+      <mat-panel-title>{{ button.label }}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="dropdown" *ngIf="button.show">
+      <button mat-button *ngFor="let prompt of button.prompts" (click)="addToPrompt(prompt)">
+        {{ prompt }}
+      </button>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

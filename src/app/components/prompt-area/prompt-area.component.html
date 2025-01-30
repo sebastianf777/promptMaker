@@ -1,0 +1,10 @@
+<div class="prompt-area">
+  <textarea 
+    (input)="onPromptChange($event)" 
+    [value]="fullPrompt" 
+    rows="5" 
+    placeholder="Write your prompt aaahere..."
+  ></textarea>
+</div>
+<button mat-raised-button color="primary" (click)="copyToClipboard()">Copy Prompt</button>
+

@@ -1,0 +1,120 @@
+::ng-deep .accordion-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .mat-expansion-panel-spacing {
+    margin: 0 !important;
+  }
+
+  .mat-expansion-panel {
+    flex: 0 1 auto;
+    overflow: visible !important;
+    box-shadow: none !important;
+    position: relative;
+    width: 200px;
+    /* Set consistent width for all dropdowns */
+  }
+
+  .mat-expansion-panel-header {
+    background-color: #fefefe !important;
+ 
+    /* Evitar doble borde */
+    border-radius: 0  !important;
+    border: 1px solid #ddd !important;
+    padding: 10px 20px !important;
+    font-weight: bold !important;
+    cursor: pointer;
+    height: 64px !important;
+    line-height: 1.5;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      background-color: #e3f2fd !important;
+    }
+  }
+
+  .mat-expansion-panel-header.mat-expanded {
+    background-color: #e3f2fd !important;
+  }
+
+  .mat-expansion-panel-content-wrapper {
+    position: absolute !important;
+    top: calc(100%);
+    left: 0;
+    z-index: 1000;
+    background-color: #ffffff !important;
+    border-top: none;
+    /* Evitar doble borde */
+    border-radius: 0 0 16px 16px !important;
+    /* Bordes redondeados en la parte inferior */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    /* Remove extra padding for dropdown */
+    width: 100%;
+    /* Match the width of the parent button */
+    display: none !important;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    transform-origin: top;
+
+  }
+
+  .mat-expansion-panel.mat-expanded .mat-expansion-panel-content-wrapper {
+    display: block !important;
+    transform: scaleY(1);
+  }
+
+  .mat-expansion-panel-body {
+    padding: 0;
+  }
+
+  .dropdown {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* Match parent width */
+    padding: 0;
+    margin: 0;
+
+    button {
+      padding: 10px 20px;
+      /* Match the main button's padding */
+      font-size: 14px;
+      color: #333;
+      cursor: pointer;
+      text-align: left;
+      /* Align text to the left */
+      background-color: #ffffff;
+      /* Background color for options */
+      border: 1px solid #ddd;
+      /* Divider between options */
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #e3f2fd;
+      }
+
+      &:last-child {
+        border-top: none;
+        /* Evitar doble borde */
+        border-radius: 0 0 16px 16px !important;
+        /* Bordes redondeados en la parte inferior */
+      }
+    }
+  }
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .mat-expansion-panel {
+      flex: 1 0 100%;
+      /* Full width on mobile screens */
+      max-width: none;
+    }
+
+    .mat-expansion-panel-header {
+      padding: 10px !important;
+    }
+  }
+}
