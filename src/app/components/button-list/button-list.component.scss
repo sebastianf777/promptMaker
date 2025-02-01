@@ -16,7 +16,11 @@
     position: relative;
     width: 200px;
     /* Set consistent width for all dropdowns */
+    /* MOBILE RESPONSIVENESS */
+  @media (max-width: 768px) {
+    width: auto; /* Take full width */
   }
+}
 
   .mat-expansion-panel-header {
     background-color: #fefefe !important;

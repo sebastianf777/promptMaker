@@ -3,41 +3,56 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 100%;
-  
+    // width: 100%; /* Default: take full width */
+    // max-width: 450px; /* Same max-width as content-container */
+    // min-width: 200px; /* Minimum width before breaking */
+    // margin-bottom: 20px; /* Space from the content-container */
+
+    // /* MOBILE RESPONSIVENESS */
+    // @media (max-width: 768px) {
+    //     max-width: 100%; /* Take full width on mobile */
+    //     min-width: unset; /* Remove the minimum limit */
+    // }
+
     textarea {
-      width: 428px;
-      padding: 10px;
-      margin: 5px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      resize: vertical;
+        width: 428px;
+        padding: 30px 10px 10px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+        resize: vertical;
+
+        /* MOBILE RESPONSIVENESS */
+        @media (max-width: 768px) {
+            /* Stack on mobile */
+            max-width: 240px;
+            /* Take full width */
+        }
     }
-  
-    .copy-button {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: transparent;
-      border: none;
-      font-size: 16px;
-      color: #333;
-      cursor: pointer;
-      padding: 5px 10px;
-      border-radius: 5px;
-      position: absolute;
-      top: 7px;
-      right: 7px;
-      transition: color 0.3s ease;
-  
-      &:hover {
-        color: #007bff;
-      }
-  
-      mat-icon {
-        font-size: 18px;
-      }
+
+        .copy-button {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: #007bff;
+            }
+
+            mat-icon {
+                font-size: 18px;
+            }
+        }
     }
-  }
-  
