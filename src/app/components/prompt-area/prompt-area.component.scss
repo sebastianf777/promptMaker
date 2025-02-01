@@ -1,4 +1,43 @@
-textarea{
-    width: 446px;
-    margin: 5px;
-}
+.prompt-area {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  
+    textarea {
+      width: 428px;
+      padding: 10px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      resize: vertical;
+    }
+  
+    .copy-button {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      color: #333;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      transition: color 0.3s ease;
+  
+      &:hover {
+        color: #007bff;
+      }
+  
+      mat-icon {
+        font-size: 18px;
+      }
+    }
+  }
+  

@@ -3,8 +3,12 @@
     (input)="onPromptChange($event)" 
     [value]="fullPrompt" 
     rows="5" 
-    placeholder="Write your prompt aaahere..."
+    placeholder="Write your prompt here..."
   ></textarea>
+
+  <button class="copy-button" (click)="copyToClipboard()">
+    <mat-icon>{{ copied ? 'check' : 'content_copy' }}</mat-icon>
+    {{ copied ? 'Copied!' : 'Copy' }}
+  </button>
 </div>
-<button mat-raised-button color="primary" (click)="copyToClipboard()">Copy Prompt</button>
 

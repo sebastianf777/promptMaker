@@ -1,47 +1,44 @@
 import { Component } from '@angular/core';
 import { PromptService } from '../../services/prompt-service';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-prompt-area',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, MatIconModule], // Ensure MatIconModule is imported
   templateUrl: './prompt-area.component.html',
   styleUrls: ['./prompt-area.component.scss']
 })
 export class PromptAreaComponent {
   fullPrompt: string = '';
-  buttonText: string = 'Copy Prompt'; // Default button text
-  timeoutId: any; // To track the timeout
+  copied: boolean = false; // Track if copied
+  timeoutId: any; // Track timeout
 
-  constructor(private promptService: PromptService) {
+  constructor(private promptService: PromptService, private clipboard: Clipboard) {
     this.promptService.prompts$.subscribe((prompts: string[]) => {
       this.fullPrompt = prompts.join(' ');
     });
   }
 
   onPromptChange(event: Event): void {
-    // Update `fullPrompt` when the textarea content changes
     const target = event.target as HTMLTextAreaElement;
     this.fullPrompt = target.value;
   }
 
   copyToClipboard(): void {
-    navigator.clipboard.writeText(this.fullPrompt).then(() => {
-      this.buttonText = 'Copied!'; // Temporarily change button text
+    this.clipboard.copy(this.fullPrompt);
+    this.copied = true;
 
-      // Clear any previous timeout
-      if (this.timeoutId) {
-        clearTimeout(this.timeoutId);
-      }
+    // Clear any previous timeout
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
 
-      // Revert button text after 2 seconds
-      this.timeoutId = setTimeout(() => {
-        this.buttonText = 'Copy Prompt';
-      }, 2000);
-    });
-  }
-
-  resetButtonText(): void {
-    this.buttonText = 'Copy Prompt'; // Revert to default when clicking elsewhere
+    // Revert text after 2 seconds
+    this.timeoutId = setTimeout(() => {
+      this.copied = false;
+    }, 2000);
   }
 }
