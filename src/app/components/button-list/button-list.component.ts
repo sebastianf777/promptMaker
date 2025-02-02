@@ -46,12 +46,13 @@ export class ButtonListComponent {
       show: false 
     },
     { 
-      label: 'Style', 
+      label: 'Photo Styles', 
       prompts: [
-        { name: 'Minimalist', image: 'assets/images/minimalist.jpg' },
-        { name: 'Abstract', image: 'assets/images/abstract.jpg' },
-        { name: 'Retro', image: 'assets/images/retro.jpg' },
-        { name: 'Modern', image: 'assets/images/modern.jpg' }
+        { name: 'Portrait', image: 'assets/images/portrait.jpg' },
+        { name: 'Cinematic', image: 'assets/images/cinematic.jpg' },
+        { name: 'Amateur', image: 'assets/images/amateur.jpg' },
+        { name: 'Landscape', image: 'assets/images/landscape.jpg' },
+        { name: 'Street Style', image: 'assets/images/street-style.jpg' }
       ], 
       show: false 
     }
