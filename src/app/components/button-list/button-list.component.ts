@@ -16,10 +16,11 @@ export class ButtonListComponent {
     { 
       label: 'Camera Lens', 
       prompts: [
-        { name: 'Wide Angle', image: 'assets/images/wide-angle.jpg' },
-        { name: 'Telephoto', image: 'assets/images/telephoto.jpg' },
-        { name: 'Macro', image: 'assets/images/macro.jpg' },
-        { name: 'Fisheye', image: 'assets/images/fisheye.jpg' }
+        { name: 'Leica 50mm', image: 'assets/images/leica-50mm.jpg' },
+        { name: 'Fujifilm 110mm', image: 'assets/images/fujifilm-110mm.jpg' },
+        { name: 'Sony 16-35mm', image: 'assets/images/sony-16-35mm.jpg' },
+        { name: 'Nikon 70-200mm', image: 'assets/images/nikon-70-200mm.jpg' },
+        { name: 'Canon 24-70mm', image: 'assets/images/canon-24-70mm.jpg' }
       ], 
       show: false 
     },
@@ -52,6 +53,17 @@ export class ButtonListComponent {
         { name: 'Cinematic', image: 'assets/images/cinematic.jpg' },
         { name: 'Amateur', image: 'assets/images/amateur.jpg' },
         { name: 'Landscape', image: 'assets/images/landscape.jpg' },
+        { name: 'Street Style', image: 'assets/images/street-style.jpg' }
+      ], 
+      show: false 
+    },
+    { 
+      label: 'Photo Effects', 
+      prompts: [
+        { name: 'Geometric Overlay', image: 'assets/images/geometric-overlay.jpg' },
+        { name: 'Tilt Shift Miniature', image: 'assets/images/tilt-shift-miniature.jpg' },
+        { name: 'Uv Camera', image: 'assets/images/uv-camera.jpg' },
+        { name: 'Quantum Superimposition', image: 'assets/images/quantum-superimposition.jpg' },
         { name: 'Street Style', image: 'assets/images/street-style.jpg' }
       ], 
       show: false 
