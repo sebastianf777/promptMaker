@@ -41,8 +41,9 @@ export class ButtonListComponent {
       prompts: [
         { name: 'Soft Light', image: 'assets/images/soft-light.jpg' },
         { name: 'Hard Light', image: 'assets/images/hard-light.jpg' },
-        { name: 'Backlight', image: 'assets/images/backlight.jpg' },
-        { name: 'Natural Light', image: 'assets/images/natural-light.jpg' }
+        { name: 'Soft Focus', image: 'assets/images/soft-focus.jpg' },
+        { name: 'Cinematic Lighting', image: 'assets/images/cinematic-lighting.jpg' },
+        { name: 'High Contrast', image: 'assets/images/high-contrast.jpg' }
       ], 
       show: false 
     },
@@ -64,7 +65,7 @@ export class ButtonListComponent {
         { name: 'Tilt Shift Miniature', image: 'assets/images/tilt-shift-miniature.jpg' },
         { name: 'Uv Camera', image: 'assets/images/uv-camera.jpg' },
         { name: 'Quantum Superimposition', image: 'assets/images/quantum-superimposition.jpg' },
-        { name: 'Street Style', image: 'assets/images/street-style.jpg' }
+        { name: 'Platinum Print', image: 'assets/images/platinum-print.jpg' }
       ], 
       show: false 
     }
