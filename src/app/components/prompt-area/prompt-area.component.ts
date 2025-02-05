@@ -7,56 +7,63 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-prompt-area',
   standalone: true,
-  imports: [CommonModule, MatIconModule], // Ensure MatIconModule is imported
+  imports: [CommonModule, MatIconModule], 
   templateUrl: './prompt-area.component.html',
   styleUrls: ['./prompt-area.component.scss']
 })
 export class PromptAreaComponent {
-  fullPrompt: string = '';
-  copied: boolean = false; // Track if copied
-  timeoutId: any; // Track timeout
+  fullPrompt: string = ''; // Stores the full prompt text
+  copied: boolean = false;
+  timeoutId: any;
 
   constructor(private promptService: PromptService, private clipboard: Clipboard) {
-    this.promptService.prompts$.subscribe((prompts: string[]) => {
-      this.fullPrompt = prompts.join('');
+    this.promptService.prompts$.subscribe((prompt: string) => {
+      this.fullPrompt = prompt; 
     });
   }
 
+  /** Handles manual typing in the textarea */
   onPromptChange(event: Event): void {
     const target = event.target as HTMLTextAreaElement;
     this.fullPrompt = target.value;
+    this.promptService.setPrompt(this.fullPrompt); // Store full text
   }
 
+  /** Adds selected dropdown option to the prompt */
+  addPrompt(prompt: string): void {
+    this.promptService.addPrompt(prompt);
+  }
+
+  /** Copies the prompt to the clipboard */
   copyToClipboard(): void {
     this.clipboard.copy(this.fullPrompt);
     this.copied = true;
-
-    // Clear any previous timeout
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId);
-    }
-
-    // Revert text after 2 seconds
-    this.timeoutId = setTimeout(() => {
-      this.copied = false;
-    }, 2000);
+    if (this.timeoutId) clearTimeout(this.timeoutId);
+    this.timeoutId = setTimeout(() => { this.copied = false; }, 2000);
   }
+
+  /** Undo last action */
   undo(): void {
     this.promptService.undo();
   }
 
+  /** Redo last undone action */
   redo(): void {
     this.promptService.redo();
   }
+
+  /** Clears the entire prompt */
   clearPrompt(): void {
     this.promptService.clearPrompts();
   }
 
+  /** Check if undo is possible */
   get canUndo(): boolean {
-    return this.promptService['history'].length > 0;
+    return this.promptService.hasUndo();
   }
 
+  /** Check if redo is possible */
   get canRedo(): boolean {
-    return this.promptService['future'].length > 0;
+    return this.promptService.hasRedo();
   }
 }
