@@ -13,17 +13,6 @@ import { PreviewService } from '../../services/preview.service';
 })
 export class ButtonListComponent {
   buttons = [
-    { 
-      label: 'Camera Lens', 
-      prompts: [
-        { name: 'Leica 50mm', image: 'assets/images/leica-50mm.jpg' },
-        { name: 'Fujifilm 110mm', image: 'assets/images/fujifilm-110mm.jpg' },
-        { name: 'Sony 16-35mm', image: 'assets/images/sony-16-35mm.jpg' },
-        { name: 'Nikon 70-200mm', image: 'assets/images/nikon-70-200mm.jpg' },
-        { name: 'Canon 24-70mm', image: 'assets/images/canon-24-70mm.jpg' }
-      ], 
-      show: false 
-    },
     {
       label: 'Shot Types',
       prompts: [
@@ -34,17 +23,6 @@ export class ButtonListComponent {
         { name: 'Medium Full Shot', image: 'assets/images/medium-full-shot.jpg' },
         { name: 'Full Shot', image: 'assets/images/full-shot.jpg' }
       ],
-      show: false 
-    },
-    { 
-      label: 'Lighting', 
-      prompts: [
-        { name: 'Soft Light', image: 'assets/images/soft-light.jpg' },
-        { name: 'Hard Light', image: 'assets/images/hard-light.jpg' },
-        { name: 'Soft Focus', image: 'assets/images/soft-focus.jpg' },
-        { name: 'Cinematic Lighting', image: 'assets/images/cinematic-lighting.jpg' },
-        { name: 'High Contrast', image: 'assets/images/high-contrast.jpg' }
-      ], 
       show: false 
     },
     { 
@@ -68,7 +46,29 @@ export class ButtonListComponent {
         { name: 'Platinum Print', image: 'assets/images/platinum-print.jpg' }
       ], 
       show: false 
-    }
+    },
+    { 
+      label: 'Camera Lens', 
+      prompts: [
+        { name: 'Leica 50mm', image: 'assets/images/leica-50mm.jpg' },
+        { name: 'Fujifilm 110mm', image: 'assets/images/fujifilm-110mm.jpg' },
+        { name: 'Sony 16-35mm', image: 'assets/images/sony-16-35mm.jpg' },
+        { name: 'Nikon 70-200mm', image: 'assets/images/nikon-70-200mm.jpg' },
+        { name: 'Canon 24-70mm', image: 'assets/images/canon-24-70mm.jpg' }
+      ], 
+      show: false 
+    },
+    { 
+      label: 'Lighting', 
+      prompts: [
+        { name: 'Soft Light', image: 'assets/images/soft-light.jpg' },
+        { name: 'Hard Light', image: 'assets/images/hard-light.jpg' },
+        { name: 'Soft Focus', image: 'assets/images/soft-focus.jpg' },
+        { name: 'Cinematic Lighting', image: 'assets/images/cinematic-lighting.jpg' },
+        { name: 'High Contrast', image: 'assets/images/high-contrast.jpg' }
+      ], 
+      show: false 
+    } 
   ];
 
   constructor(
