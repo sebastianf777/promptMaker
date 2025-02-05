@@ -18,7 +18,7 @@ export class PromptAreaComponent {
 
   constructor(private promptService: PromptService, private clipboard: Clipboard) {
     this.promptService.prompts$.subscribe((prompts: string[]) => {
-      this.fullPrompt = prompts.join(' ');
+      this.fullPrompt = prompts.join('');
     });
   }
 
@@ -40,5 +40,23 @@ export class PromptAreaComponent {
     this.timeoutId = setTimeout(() => {
       this.copied = false;
     }, 2000);
+  }
+  undo(): void {
+    this.promptService.undo();
+  }
+
+  redo(): void {
+    this.promptService.redo();
+  }
+  clearPrompt(): void {
+    this.promptService.clearPrompts();
+  }
+
+  get canUndo(): boolean {
+    return this.promptService['history'].length > 0;
+  }
+
+  get canRedo(): boolean {
+    return this.promptService['future'].length > 0;
   }
 }

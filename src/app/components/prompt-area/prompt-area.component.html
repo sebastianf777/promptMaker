@@ -6,9 +6,19 @@
     placeholder="Write your prompt here..."
   ></textarea>
 
-  <button class="copy-button" (click)="copyToClipboard()">
-    <mat-icon>{{ copied ? 'check' : 'content_copy' }}</mat-icon>
-    {{ copied ? 'Copied!' : 'Copy' }}
-  </button>
+  <div class="prompt-controls">
+    <button mat-icon-button (click)="undo()" [disabled]="!canUndo">
+      <mat-icon>undo</mat-icon>
+    </button>
+    <button mat-icon-button (click)="redo()" [disabled]="!canRedo">
+      <mat-icon>redo</mat-icon>
+    </button>
+    <button mat-icon-button (click)="clearPrompt()" [disabled]="!fullPrompt">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button mat-icon-button (click)="copyToClipboard()">
+      <mat-icon>{{ copied ? 'check' : 'content_copy' }}</mat-icon>
+    </button>
+  </div>
 </div>
 
