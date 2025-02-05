@@ -11,12 +11,21 @@ export class PromptService {
   prompts$ = this.promptsSubject.asObservable();
 
   addPrompt(prompt: string) {
-    this.prompts.push(prompt);
-    this.promptsSubject.next(this.prompts);
+    // Avoid adding duplicate prompts
+    if (!this.prompts.includes(prompt)) {
+      this.prompts.push(prompt);
+    }
+
+    this.promptsSubject.next(this.getFormattedPrompts());
   }
 
   clearPrompts() {
     this.prompts = [];
     this.promptsSubject.next(this.prompts);
+  }
+
+  private getFormattedPrompts(): string[] {
+    // Join with a comma and space, but remove trailing spaces
+    return [this.prompts.join(', ').trim()];
   }
 }
