@@ -7,11 +7,17 @@
       <div 
         class="dropdown-item" 
         *ngFor="let prompt of button.prompts"
-        (mouseenter)="setPreview(prompt.image)"
-        (mouseleave)="setPreview(null)"
-        (click)="addToPrompt(prompt.name)">
+        (click)="handleClick(prompt)" 
+        (mouseover)="setPreview(prompt.image)" 
+        (mouseleave)="clearPreview()">
         {{ prompt.name }}
+         <!-- ✅ Confirmation Buttons (Mobile Only) -->
+         <div *ngIf="awaitingConfirmation?.name === prompt.name && isMobile()" class="confirmation-buttons">
+          <button mat-raised-button color="primary" (click)="confirmAddPrompt()">Yes</button>
+          <button mat-raised-button color="warn" (click)="cancelAddPrompt()">No</button>
+        </div>
       </div>
+      
     </div>
   </mat-expansion-panel>
 </mat-accordion>

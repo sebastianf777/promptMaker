@@ -11,4 +11,8 @@ export class PreviewService {
   setPreviewImage(imageUrl: string | null): void {
     this.previewImageSource.next(imageUrl);
   }
+
+  getCurrentImage(): string | null {
+    return this.previewImageSource.getValue();
+  }
 }
