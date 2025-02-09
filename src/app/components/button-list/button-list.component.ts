@@ -14,6 +14,18 @@ import { PreviewService } from '../../services/preview.service';
 export class ButtonListComponent {
   buttons = [
     {
+      label: 'Prompt Mode',
+      prompts: [
+        { name: 'Simple', image: 'assets/images/simple-mode.jpg' },
+        { name: 'Closeup', image: 'assets/images/closeup.jpg' },
+        { name: 'Medium Closeup', image: 'assets/images/medium-closeup.jpg' },
+        { name: 'Medium Shot', image: 'assets/images/medium-shot.jpg' },
+        { name: 'Medium Full Shot', image: 'assets/images/medium-full-shot.jpg' },
+        { name: 'Full Shot', image: 'assets/images/full-shot.jpg' }
+      ],
+      show: false
+    },
+    {
       label: 'Shot Types',
       prompts: [
         { name: 'Extreme Closeup', image: 'assets/images/extreme-closeup.jpg' },
