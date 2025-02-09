@@ -148,15 +148,16 @@ export class ButtonListComponent {
       this.selectedFormulaLabel = prompt.name; // Update the header title
       this.updateButtonVisibility();
       this.closeAllDropdowns(); // ✅ Auto-collapse after formula selection
-    } else {
       this.setPreview(prompt.image);
-    }
+
+      return; // 🚨 Detener la ejecución aquí
+    } 
     // ✅ Collapse the dropdown after selection
       // this.toggleDropdown(buttonLabel);
 
     if (this.isMobile()) {
       // If we're already awaiting confirmation for this prompt, do nothing
-      if (this.awaitingConfirmation?.name === prompt.name) return;
+      if (this.awaitingConfirmation?.name === prompt.name && buttonLabel !== 'Prompt Formulas') return;
       // Show preview and ask for confirmation
       this.awaitingConfirmation = prompt;
       this.setPreview(prompt.image);
