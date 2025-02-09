@@ -1,9 +1,7 @@
 <mat-accordion class="accordion-container">
   <ng-container *ngFor="let button of buttons; let i = index">
-    <mat-expansion-panel 
-      *ngIf="button.show || button.label === 'Prompt Formulas'" 
-      [expanded]="button.show">
-
+    <mat-expansion-panel *ngIf="button.show || button.label === 'Prompt Formulas'" [expanded]="button.expanded"
+      (opened)="toggleDropdown(button.label)" (closed)="button.expanded = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{ button.label === 'Prompt Formulas' && selectedFormula ? selectedFormulaLabel : button.label }}
@@ -11,18 +9,15 @@
       </mat-expansion-panel-header>
 
       <div class="dropdown" *ngIf="button.show">
-        <div 
-          class="dropdown-item" 
-          *ngFor="let prompt of button.prompts"
-          (click)="handleClick(prompt, button.label)" 
-          (mouseover)="setPreview(prompt.image)" 
-          (mouseleave)="clearPreview()">
+        <div class="dropdown-item" *ngFor="let prompt of button.prompts" (click)="handleClick(prompt, button.label)"
+          (mouseover)="setPreview(prompt.image)" (mouseleave)="clearPreview()">
           {{ prompt.name }}
 
           <!-- ✅ Confirmation Buttons (Mobile Only) -->
           <div *ngIf="awaitingConfirmation?.name === prompt.name && isMobile()" class="confirmation-buttons">
-            <button mat-raised-button color="primary" (click)="confirmAddPrompt()">Yes</button>
-            <button mat-raised-button color="warn" (click)="cancelAddPrompt()">No</button>
+            Add this prompt?
+            <button mat-raised-button color="primary" (click)="confirmAddPrompt(button.label)">Yes</button>
+            <!-- <button mat-raised-button color="warn" (click)="cancelAddPrompt()">No</button> -->
           </div>
         </div>
       </div>

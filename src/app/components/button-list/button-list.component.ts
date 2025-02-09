@@ -23,7 +23,7 @@ export class ButtonListComponent {
         { name: 'Photo Realistic', image: 'assets/images/photo-realistic.jpg' },
         { name: 'Character focused', image: 'assets/images/character-focused.jpg' }
       ],
-      show: true // Always visible
+      show: true, // Always visible
     },
     {
       label: 'Shot Types',
@@ -35,7 +35,8 @@ export class ButtonListComponent {
         { name: 'Medium Full Shot', image: 'assets/images/medium-full-shot.jpg' },
         { name: 'Full Shot', image: 'assets/images/full-shot.jpg' }
       ],
-      show: false
+      show: false,
+      expanded: false   // ✅ Controla si el dropdown está abierto
     },
     {
       label: 'Photo Styles',
@@ -46,7 +47,20 @@ export class ButtonListComponent {
         { name: 'Landscape', image: 'assets/images/landscape.jpg' },
         { name: 'Street Style', image: 'assets/images/street-style.jpg' }
       ],
-      show: false
+      show: false,
+      expanded: false   // ✅ Controla si el dropdown está abierto
+    },
+    {
+      label: 'Subject',
+      prompts: [
+        { name: 'A dog', image: 'assets/images/a-dog.jpg' },
+        { name: 'A cat', image: 'assets/images/a-cat.jpg' },
+        { name: 'A man', image: 'assets/images/a-man.jpg' },
+        { name: 'A woman', image: 'assets/images/a-woman.jpg' },
+        { name: 'Custom', image: 'assets/images/custom.jpg' }
+      ],
+      show: false,
+      expanded: false   // ✅ Controla si el dropdown está abierto
     },
     {
       label: 'Photo Effects',
@@ -57,7 +71,8 @@ export class ButtonListComponent {
         { name: 'Quantum Superimposition', image: 'assets/images/quantum-superimposition.jpg' },
         { name: 'Platinum Print', image: 'assets/images/platinum-print.jpg' }
       ],
-      show: false
+      show: false,
+      expanded: false   // ✅ Controla si el dropdown está abierto
     },
     {
       label: 'Camera Lens',
@@ -68,7 +83,8 @@ export class ButtonListComponent {
         { name: 'Nikon 70-200mm', image: 'assets/images/nikon-70-200mm.jpg' },
         { name: 'Canon 24-70mm', image: 'assets/images/canon-24-70mm.jpg' }
       ],
-      show: false
+      show: false,
+      expanded: false   // ✅ Controla si el dropdown está abierto
     },
     {
       label: 'Lighting',
@@ -79,17 +95,19 @@ export class ButtonListComponent {
         { name: 'Cinematic Lighting', image: 'assets/images/cinematic-lighting.jpg' },
         { name: 'High Contrast', image: 'assets/images/high-contrast.jpg' }
       ],
-      show: false
+      show: false,
+      expanded: false   // ✅ Controla si el dropdown está abierto
     }
   ];
 
   private formulaVisibilityConfig: { [key: string]: { show: string[], hide?: string[] } } = {
     'Simple Photo Realistic': {
-      show: ['Shot Types', 'Photo Styles', 'Camera Lens', 'Lighting'],
-      hide: ['Photo Effects']
+      show: ['Photo Styles', 'Subject', 'Camera Lens', 'Lighting'],
+      hide: ['Shot Types', 'Photo Effects']
     },
     'Photo Realistic': {
-      show: ['Shot Types', 'Photo Styles', 'Photo Effects', 'Camera Lens', 'Lighting']
+      show: ['Shot Types', 'Photo Styles', 'Subject', 'Photo Effects', 'Camera Lens', 'Lighting'],
+      hide: ['Photo Effects']
     },
     'Character focused': {
       show: ['Photo Styles', 'Lighting'],
@@ -108,21 +126,12 @@ export class ButtonListComponent {
   
     this.buttons.forEach(button => {
       if (button.label !== 'Prompt Formulas') {
-        if (config) {
-          // ✅ Show buttons listed in the "show" array
-          button.show = config.show.includes(button.label);
-  
-          // ✅ Hide buttons listed in the "hide" array, if any
-          if (config.hide && config.hide.includes(button.label)) {
-            button.show = false;
-          }
-        } else {
-          button.show = false; // Default to hidden if no formula is selected
-        }
+        button.show = config?.show.includes(button.label) || false;  // ✅ Mostrar solo los permitidos
+        button.expanded = false; // ✅ Colapsar todos los dropdowns al actualizar
       }
     });
   }
-  
+
 
   constructor(
     private promptService: PromptService,
@@ -138,10 +147,13 @@ export class ButtonListComponent {
       this.selectedFormula = prompt.name;
       this.selectedFormulaLabel = prompt.name; // Update the header title
       this.updateButtonVisibility();
+      this.closeAllDropdowns(); // ✅ Auto-collapse after formula selection
     } else {
       this.setPreview(prompt.image);
-      this.addToPrompt(prompt.name);
     }
+    // ✅ Collapse the dropdown after selection
+      // this.toggleDropdown(buttonLabel);
+
     if (this.isMobile()) {
       // If we're already awaiting confirmation for this prompt, do nothing
       if (this.awaitingConfirmation?.name === prompt.name) return;
@@ -149,50 +161,49 @@ export class ButtonListComponent {
       this.awaitingConfirmation = prompt;
       this.setPreview(prompt.image);
     } else {
-      this.setPreview(prompt.image);
+      this.addToPrompt(prompt.name);
+      this.closeDropdown(buttonLabel);  // ✅ Close the dropdown after selection
     }
   }
-
-  confirmAddPrompt(): void {
+  closeDropdown(label: string): void {
+    const button = this.buttons.find(b => b.label === label);
+    if (button) {
+      button.expanded = false;  // ✅ Collapse the selected dropdown
+    }
+  }
+  confirmAddPrompt(buttonLabel: string): void {
     if (this.awaitingConfirmation) {
       this.addToPrompt(this.awaitingConfirmation.name);
       this.awaitingConfirmation = null; // Clear confirmation
       this.previewService.setPreviewImage(null); // Optional: Clear preview after adding
+      this.closeDropdown(buttonLabel);  // ✅ Close the dropdown after selection
     }
   }
-  cancelAddPrompt(): void {
-    this.awaitingConfirmation = null; // Cancel confirmation
-    this.previewService.setPreviewImage(null); // Optional: Clear preview on cancel
-  }
+
+  // cancelAddPrompt(): void {
+  //   this.awaitingConfirmation = null; // Cancel confirmation
+  //   this.previewService.setPreviewImage(null); // Optional: Clear preview on cancel
+  // }
 
   addToPrompt(prompt: string): void {
     this.promptService.addPrompt(prompt);
+    
   }
 
-  // toggleDropdown(index: number): void {
-  //   this.buttons.forEach((button, i) => {
-  //     if (i === index) {
-  //       button.show = !button.show;
-  //     }
-  //     // ✅ Prevent hiding other buttons when toggling formulas
-  //     else if (button.label === 'Prompt Formulas') {
-  //       button.show = false;
-  //     }
-  //   });
-  // }
+  toggleDropdown(label: string): void {
+    this.buttons.forEach((button) => {
+      if (button.label === label) {
+        button.expanded = !button.expanded; // Toggle the clicked button
+      } else {
+        button.expanded = false; // Close all others
+      }
+    });
+  }
 
   closeAllDropdowns(): void {
-    this.buttons.forEach(button => (button.show = false));
+    this.buttons.forEach(button => button.expanded = false);
   }
 
-  @HostListener('document:click', ['$event'])
-  handleClickOutside(event: Event): void {
-    if (!this.eRef.nativeElement.contains(event.target)) {
-      // this.closeAllDropdowns();
-      this.selectedFormula = null;
-      this.selectedFormulaLabel = 'Prompt Formulas'; // Reset to default
-    }
-  }
 
   // ✅ Set preview (works on both mobile and desktop now)
   setPreview(imageUrl: string | null): void {
