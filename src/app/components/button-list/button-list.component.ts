@@ -12,18 +12,18 @@ import { PreviewService } from '../../services/preview.service';
   styleUrls: ['./button-list.component.scss']
 })
 export class ButtonListComponent {
+  selectedFormula: string | null = null; // Track the selected formula
+  selectedFormulaLabel: string = 'Prompt Formulas'; // Default label
+
   buttons = [
     {
-      label: 'Prompt Mode',
+      label: 'Prompt Formulas',
       prompts: [
-        { name: 'Simple', image: 'assets/images/simple-mode.jpg' },
-        { name: 'Closeup', image: 'assets/images/closeup.jpg' },
-        { name: 'Medium Closeup', image: 'assets/images/medium-closeup.jpg' },
-        { name: 'Medium Shot', image: 'assets/images/medium-shot.jpg' },
-        { name: 'Medium Full Shot', image: 'assets/images/medium-full-shot.jpg' },
-        { name: 'Full Shot', image: 'assets/images/full-shot.jpg' }
+        { name: 'Simple Photo Realistic', image: 'assets/images/simple-photo-realistic.jpg' },
+        { name: 'Photo Realistic', image: 'assets/images/photo-realistic.jpg' },
+        { name: 'Character focused', image: 'assets/images/character-focused.jpg' }
       ],
-      show: false
+      show: true // Always visible
     },
     {
       label: 'Shot Types',
@@ -83,50 +83,103 @@ export class ButtonListComponent {
     }
   ];
 
+  private formulaVisibilityConfig: { [key: string]: { show: string[], hide?: string[] } } = {
+    'Simple Photo Realistic': {
+      show: ['Shot Types', 'Photo Styles', 'Camera Lens', 'Lighting'],
+      hide: ['Photo Effects']
+    },
+    'Photo Realistic': {
+      show: ['Shot Types', 'Photo Styles', 'Photo Effects', 'Camera Lens', 'Lighting']
+    },
+    'Character focused': {
+      show: ['Photo Styles', 'Lighting'],
+      hide: ['Photo Effects', 'Shot Types']
+    },
+    // ✅ Add new formulas here
+    'Landscape Focused': {
+      show: ['Shot Types', 'Camera Lens'],
+      hide: ['Photo Effects', 'Photo Styles', 'Lighting']
+    }
+  };
+
+
+  updateButtonVisibility(): void {
+    const config = this.formulaVisibilityConfig[this.selectedFormula!];
+  
+    this.buttons.forEach(button => {
+      if (button.label !== 'Prompt Formulas') {
+        if (config) {
+          // ✅ Show buttons listed in the "show" array
+          button.show = config.show.includes(button.label);
+  
+          // ✅ Hide buttons listed in the "hide" array, if any
+          if (config.hide && config.hide.includes(button.label)) {
+            button.show = false;
+          }
+        } else {
+          button.show = false; // Default to hidden if no formula is selected
+        }
+      }
+    });
+  }
+  
+
   constructor(
     private promptService: PromptService,
     private previewService: PreviewService,
     private eRef: ElementRef
   ) { }
 
- // ✅ Handle click for mobile and desktop
- awaitingConfirmation: { name: string; image: string } | null = null;
+  // ✅ Handle click for mobile and desktop
+  awaitingConfirmation: { name: string; image: string } | null = null;
 
- handleClick(prompt: { name: string; image: string }): void {
-  if (this.isMobile()) {
-    // If we're already awaiting confirmation for this prompt, do nothing
-    if (this.awaitingConfirmation?.name === prompt.name) return;
-
-    // Show preview and ask for confirmation
-    this.awaitingConfirmation = prompt;
-    this.setPreview(prompt.image);
-  } else {
-    this.addToPrompt(prompt.name);
-    this.setPreview(prompt.image);
+  handleClick(prompt: { name: string; image: string }, buttonLabel: string): void {
+    if (buttonLabel === 'Prompt Formulas') {
+      this.selectedFormula = prompt.name;
+      this.selectedFormulaLabel = prompt.name; // Update the header title
+      this.updateButtonVisibility();
+    } else {
+      this.setPreview(prompt.image);
+      this.addToPrompt(prompt.name);
+    }
+    if (this.isMobile()) {
+      // If we're already awaiting confirmation for this prompt, do nothing
+      if (this.awaitingConfirmation?.name === prompt.name) return;
+      // Show preview and ask for confirmation
+      this.awaitingConfirmation = prompt;
+      this.setPreview(prompt.image);
+    } else {
+      this.setPreview(prompt.image);
+    }
   }
-}
 
-confirmAddPrompt(): void {
-  if (this.awaitingConfirmation) {
-    this.addToPrompt(this.awaitingConfirmation.name);
-    this.awaitingConfirmation = null; // Clear confirmation
-    this.previewService.setPreviewImage(null); // Optional: Clear preview after adding
+  confirmAddPrompt(): void {
+    if (this.awaitingConfirmation) {
+      this.addToPrompt(this.awaitingConfirmation.name);
+      this.awaitingConfirmation = null; // Clear confirmation
+      this.previewService.setPreviewImage(null); // Optional: Clear preview after adding
+    }
   }
-}
-cancelAddPrompt(): void {
-  this.awaitingConfirmation = null; // Cancel confirmation
-  this.previewService.setPreviewImage(null); // Optional: Clear preview on cancel
-}
+  cancelAddPrompt(): void {
+    this.awaitingConfirmation = null; // Cancel confirmation
+    this.previewService.setPreviewImage(null); // Optional: Clear preview on cancel
+  }
 
   addToPrompt(prompt: string): void {
     this.promptService.addPrompt(prompt);
   }
 
-  toggleDropdown(index: number): void {
-    this.buttons.forEach((button, i) => {
-      button.show = i === index ? !button.show : false;
-    });
-  }
+  // toggleDropdown(index: number): void {
+  //   this.buttons.forEach((button, i) => {
+  //     if (i === index) {
+  //       button.show = !button.show;
+  //     }
+  //     // ✅ Prevent hiding other buttons when toggling formulas
+  //     else if (button.label === 'Prompt Formulas') {
+  //       button.show = false;
+  //     }
+  //   });
+  // }
 
   closeAllDropdowns(): void {
     this.buttons.forEach(button => (button.show = false));
@@ -135,21 +188,23 @@ cancelAddPrompt(): void {
   @HostListener('document:click', ['$event'])
   handleClickOutside(event: Event): void {
     if (!this.eRef.nativeElement.contains(event.target)) {
-      this.closeAllDropdowns();
+      // this.closeAllDropdowns();
+      this.selectedFormula = null;
+      this.selectedFormulaLabel = 'Prompt Formulas'; // Reset to default
     }
   }
 
-// ✅ Set preview (works on both mobile and desktop now)
-setPreview(imageUrl: string | null): void {
-  this.previewService.setPreviewImage(imageUrl);
-}
-
-// ✅ Clear preview when leaving hover (desktop only)
-clearPreview(): void {
-  if (!this.isMobile() && !this.awaitingConfirmation) {
-    this.previewService.setPreviewImage(null);
+  // ✅ Set preview (works on both mobile and desktop now)
+  setPreview(imageUrl: string | null): void {
+    this.previewService.setPreviewImage(imageUrl);
   }
-}
+
+  // ✅ Clear preview when leaving hover (desktop only)
+  clearPreview(): void {
+    if (!this.isMobile() && !this.awaitingConfirmation) {
+      this.previewService.setPreviewImage(null);
+    }
+  }
   // ✅ Toggle preview for mobile
   togglePreview(imageUrl: string): void {
     const currentImage = this.previewService.getCurrentImage();
