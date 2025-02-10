@@ -9,17 +9,41 @@
       </mat-expansion-panel-header>
 
       <div class="dropdown" *ngIf="button.show">
-        <div class="dropdown-item" *ngFor="let prompt of button.prompts" (click)="handleClick(prompt, button.label)"
-          (mouseover)="setPreview(prompt.image)" (mouseleave)="clearPreview()">
-          {{ prompt.name }}
+        <!-- Si el botón es de Subject, se maneja de forma personalizada -->
+        <ng-container *ngIf="button.label === 'Subject'; else defaultDropdown">
+          <ng-container *ngFor="let prompt of button.prompts">
+            <!-- Para prompts que no sean "Custom", se usa el comportamiento normal -->
+            <div class="dropdown-item" *ngIf="prompt.name !== 'Custom'" 
+              (click)="handleClick(prompt, button.label)" 
+              (mouseover)="setPreview(prompt.image)" (mouseleave)="clearPreview()">
+              {{ prompt.name }}
+            </div>
+            <!-- Para el prompt "Custom", mostramos el input si está activo -->
+            <div class="dropdown-item" *ngIf="prompt.name === 'Custom'">
+              <ng-container *ngIf="!isCustomSubjectActive">
+                <span (click)="handleCustomSubjectSelection(button.label)">{{ prompt.name }}</span>
+              </ng-container>
+              <ng-container *ngIf="isCustomSubjectActive">
+                <input type="text" [(ngModel)]="customSubject" (keyup.enter)="confirmCustomSubject(button.label)" placeholder="Escribe tu subject..." />
+                <button mat-raised-button color="primary" (click)="confirmCustomSubject(button.label)">Yes</button>
+              </ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+        <!-- Para otros botones se usa el dropdown normal -->
+        <ng-template #defaultDropdown>
+          <div class="dropdown-item" *ngFor="let prompt of button.prompts" 
+            (click)="handleClick(prompt, button.label)" 
+            (mouseover)="setPreview(prompt.image)" (mouseleave)="clearPreview()">
+            {{ prompt.name }}
 
-          <!-- ✅ Confirmation Buttons (Mobile Only) -->
-          <div *ngIf="awaitingConfirmation?.name === prompt.name && isMobile()" class="confirmation-buttons">
-            Add this prompt?
-            <button mat-raised-button color="primary" (click)="confirmAddPrompt(button.label)">Yes</button>
-            <!-- <button mat-raised-button color="warn" (click)="cancelAddPrompt()">No</button> -->
+            <!-- Confirmación para mobile -->
+            <div *ngIf="awaitingConfirmation?.name === prompt.name && isMobile()" class="confirmation-buttons">
+              Add this prompt?
+              <button mat-raised-button color="primary" (click)="confirmAddPrompt(button.label)">Yes</button>
+            </div>
           </div>
-        </div>
+        </ng-template>
       </div>
     </mat-expansion-panel>
   </ng-container>

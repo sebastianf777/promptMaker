@@ -3,11 +3,12 @@ import { PromptService } from '../../services/prompt-service';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { PreviewService } from '../../services/preview.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-button-list',
   standalone: true,
-  imports: [CommonModule, MatExpansionModule],
+  imports: [CommonModule, MatExpansionModule, FormsModule],
   templateUrl: './button-list.component.html',
   styleUrls: ['./button-list.component.scss']
 })
@@ -120,10 +121,13 @@ export class ButtonListComponent {
     }
   };
 
+  // Variables para el modo custom subject
+  isCustomSubjectActive: boolean = false;
+  customSubject: string = '';
 
   updateButtonVisibility(): void {
     const config = this.formulaVisibilityConfig[this.selectedFormula!];
-  
+
     this.buttons.forEach(button => {
       if (button.label !== 'Prompt Formulas') {
         button.show = config?.show.includes(button.label) || false;  // ✅ Mostrar solo los permitidos
@@ -151,9 +155,9 @@ export class ButtonListComponent {
       this.setPreview(prompt.image);
 
       return; // 🚨 Detener la ejecución aquí
-    } 
+    }
     // ✅ Collapse the dropdown after selection
-      // this.toggleDropdown(buttonLabel);
+    // this.toggleDropdown(buttonLabel);
 
     if (this.isMobile()) {
       // If we're already awaiting confirmation for this prompt, do nothing
@@ -164,6 +168,21 @@ export class ButtonListComponent {
     } else {
       this.addToPrompt(prompt.name);
       this.closeDropdown(buttonLabel);  // ✅ Close the dropdown after selection
+    }
+  }
+  // Método para activar el input de custom subject
+  handleCustomSubjectSelection(buttonLabel: string): void {
+    this.isCustomSubjectActive = true;
+  }
+
+  // Método para confirmar el custom subject (por Enter o clic en "Yes")
+  confirmCustomSubject(buttonLabel: string): void {
+    if (this.customSubject.trim()) {
+      this.addToPrompt(this.customSubject.trim());
+      // Reiniciamos el estado del input
+      this.isCustomSubjectActive = false;
+      this.customSubject = '';
+      this.closeDropdown(buttonLabel);
     }
   }
   closeDropdown(label: string): void {
@@ -188,7 +207,6 @@ export class ButtonListComponent {
 
   addToPrompt(prompt: string): void {
     this.promptService.addPrompt(prompt);
-    
   }
 
   toggleDropdown(label: string): void {
