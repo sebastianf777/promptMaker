@@ -52,7 +52,7 @@ export class ButtonListComponent {
       expanded: false   // ✅ Controla si el dropdown está abierto
     },
     {
-      label: 'Subject',
+      label: 'Subject + Action',
       prompts: [
         { name: 'A dog', image: 'assets/images/a-dog.jpg' },
         { name: 'A cat', image: 'assets/images/a-cat.jpg' },
@@ -71,6 +71,18 @@ export class ButtonListComponent {
         { name: 'Uv Camera', image: 'assets/images/uv-camera.jpg' },
         { name: 'Quantum Superimposition', image: 'assets/images/quantum-superimposition.jpg' },
         { name: 'Platinum Print', image: 'assets/images/platinum-print.jpg' }
+      ],
+      show: false,
+      expanded: false   // ✅ Controla si el dropdown está abierto
+    },
+    {
+      label: 'Cameras',
+      prompts: [
+        { name: 'Leica 50mm', image: 'assets/images/leica-50mm.jpg' },
+        { name: 'Fujifilm 110mm', image: 'assets/images/fujifilm-110mm.jpg' },
+        { name: 'Sony 16-35mm', image: 'assets/images/sony-16-35mm.jpg' },
+        { name: 'Nikon 70-200mm', image: 'assets/images/nikon-70-200mm.jpg' },
+        { name: 'Canon 24-70mm', image: 'assets/images/canon-24-70mm.jpg' }
       ],
       show: false,
       expanded: false   // ✅ Controla si el dropdown está abierto
@@ -103,11 +115,11 @@ export class ButtonListComponent {
 
   private formulaVisibilityConfig: { [key: string]: { show: string[], hide?: string[] } } = {
     'Simple Photo Realistic': {
-      show: ['Photo Styles', 'Subject', 'Camera Lens', 'Lighting'],
+      show: ['Photo Styles', 'Subject + Action', 'Cameras', 'Camera Lens', 'Lighting'],
       hide: ['Shot Types', 'Photo Effects']
     },
     'Photo Realistic': {
-      show: ['Shot Types', 'Photo Styles', 'Subject', 'Photo Effects', 'Camera Lens', 'Lighting'],
+      show: ['Shot Types', 'Photo Styles', 'Subject + Action', 'Cameras', 'Photo Effects', 'Camera Lens', 'Lighting'],
       hide: ['Photo Effects']
     },
     'Character focused': {

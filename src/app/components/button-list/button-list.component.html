@@ -10,7 +10,7 @@
 
       <div class="dropdown" *ngIf="button.show">
         <!-- Si el botón es de Subject, se maneja de forma personalizada -->
-        <ng-container *ngIf="button.label === 'Subject'; else defaultDropdown">
+        <ng-container *ngIf="button.label === 'Subject + Action'; else defaultDropdown">
           <ng-container *ngFor="let prompt of button.prompts">
             <!-- Para prompts que no sean "Custom", se usa el comportamiento normal -->
             <div class="dropdown-item" *ngIf="prompt.name !== 'Custom'" 
